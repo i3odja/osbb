@@ -5,9 +5,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/i3odja/osbb/webapi/client"
-
 	pb "github.com/i3odja/osbb/contracts/notifications"
+	"github.com/i3odja/osbb/webapi/client"
 )
 
 const address = "localhost:9999"
