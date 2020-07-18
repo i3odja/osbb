@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f8a15239-5c44-4b81-823e-67d6251bd837" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="/snap/go/current" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1eolV2Xtmi2BV9FyL0bd8ZKWvzO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="watcher.settings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/osbb-webapi" />
+      <recent name="$PROJECT_DIR$/osbb-notifications" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.go build main.go (2)">
+    <configuration name="go build main.go (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="osbb" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/osbb-webapi/main.go" />
+      <package value="osbb" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build main.go (2)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="osbb" />
+      <working_directory value="$PROJECT_DIR$/webapi" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/webapi/main.go" />
+      <package value="osbb" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build main.go (3)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="osbb" />
+      <working_directory value="$PROJECT_DIR$/notifications" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/notifications/main.go" />
+      <package value="osbb" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="osbb" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/osbb-notifications/main.go" />
+      <package value="osbb" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build main.go (2)" />
+        <item itemvalue="Go Build.go build main.go (3)" />
+        <item itemvalue="Go Build.go build main.go (1)" />
+        <item itemvalue="Go Build.go build main.go" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="502" y="329" key="#GOROOT" timestamp="1594995862592">
+      <screen x="49" y="27" width="1317" height="741" />
+    </state>
+    <state x="502" y="329" key="#GOROOT/49.27.1317.741@49.27.1317.741" timestamp="1594995862592" />
+    <state x="502" y="233" width="400" height="327" key="#Go_Modules" timestamp="1594995859218">
+      <screen x="49" y="27" width="1317" height="741" />
+    </state>
+    <state x="502" y="233" width="400" height="327" key="#Go_Modules/49.27.1317.741@49.27.1317.741" timestamp="1594995859218" />
+    <state width="1275" height="201" key="GridCell.Tab.0.bottom" timestamp="1595083281738">
+      <screen x="49" y="27" width="1317" height="741" />
+    </state>
+    <state width="1275" height="201" key="GridCell.Tab.0.bottom/49.27.1317.741@49.27.1317.741" timestamp="1595083281738" />
+    <state width="1275" height="201" key="GridCell.Tab.0.center" timestamp="1595083281738">
+      <screen x="49" y="27" width="1317" height="741" />
+    </state>
+    <state width="1275" height="201" key="GridCell.Tab.0.center/49.27.1317.741@49.27.1317.741" timestamp="1595083281738" />
+    <state width="1275" height="201" key="GridCell.Tab.0.left" timestamp="1595083281737">
+      <screen x="49" y="27" width="1317" height="741" />
+    </state>
+    <state width="1275" height="201" key="GridCell.Tab.0.left/49.27.1317.741@49.27.1317.741" timestamp="1595083281737" />
+    <state width="1275" height="201" key="GridCell.Tab.0.right" timestamp="1595083281738">
+      <screen x="49" y="27" width="1317" height="741" />
+    </state>
+    <state width="1275" height="201" key="GridCell.Tab.0.right/49.27.1317.741@49.27.1317.741" timestamp="1595083281738" />
+    <state x="219" y="31" key="SettingsEditor" timestamp="1595083277038">
+      <screen x="49" y="27" width="1317" height="741" />
+    </state>
+    <state x="219" y="31" key="SettingsEditor/49.27.1317.741@49.27.1317.741" timestamp="1595083277038" />
+  </component>
+</project>

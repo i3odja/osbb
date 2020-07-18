@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+option go_package = "/notifications";
+
+package notifications;
+
+// The greeting service definition.
+service Service {
+  // Sends a notification to a single user 
+  rpc SendNotification (SendRequest) returns (SendResponse) {}
+  // Sends a notification to all users
+  rpc BroadcastNotification (BroadcastRequest) returns (BroadcastResponse) {}
+  // Sends a My notification to all users
+  rpc MyNotification (MyRequest) returns (MyResponse) {}
+}
+
+message Action {
+  enum ID {
+    NONE = 0;
+    GO_TO_URL = 1;
+  }
+  ID id = 1;
+  string data = 2;
+}
+
+message Notification {
+  string time = 1;
+  enum Level {
+    INFO = 0;
+    SUCCESS = 1;
+    WARNING = 2;
+    FAILURE = 3;
+  }
+  Level level = 2;
+  string title = 3;
+  string message = 4;
+  map<string, Action> actions = 5;
+}
+
+message SendRequest {
+  string user_id = 1;
+  repeated Notification notification = 2;
+}
+
+message SendResponse {
+  string sResponse = 1;
+}
+
+message BroadcastRequest {
+  repeated Notification notification = 1;
+}
+
+message BroadcastResponse {
+  string bResponse = 1;
+}
+
+message MyRequest {
+  repeated Notification notification = 1;
+}
+
+message MyResponse {
+  string mResponse = 1;
+}

@@ -1,0 +1,19 @@
+# Folders
+dist/
+tmp/
+out-tsc/
+node_modules/
+.idea/
+.vscode/
+.sass-cache/
+coverage/
+typings/
+docs/
+
+# Files
+npm-debug.log
+testem.log
+/e2e/*.js
+/e2e/*.map
+.DS_Store
+Thumbs.db
