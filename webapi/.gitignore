@@ -1,0 +1,7 @@
+# Folders
+.idea/
+.vscode/
+vendor/
+
+# Files
+.DS_Store
