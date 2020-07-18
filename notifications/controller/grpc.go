@@ -49,5 +49,9 @@ func (s *grpcServer) BroadcastNotification(ctx context.Context, in *pb.Broadcast
 }
 
 func (s *grpcServer) MyNotification(ctx context.Context, in *pb.MyRequest) (*pb.MyResponse, error) {
-	return &pb.MyResponse{MResponse: "I'm MyNotification!"}, nil
+	title, err := s.push.PersonalTestNotification(ctx, in.Notification)
+	if err != nil {
+		return &pb.MyResponse{MResponse: err.Error()}, nil
+	}
+	return &pb.MyResponse{MResponse: title}, nil
 }
