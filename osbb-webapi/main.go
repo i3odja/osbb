@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"log"
 	"time"
 
+	"github.com/i3odja/osbb/shared/logger"
 	"github.com/i3odja/osbb/webapi/client"
 	"github.com/i3odja/osbb/webapi/server"
 )
@@ -12,9 +12,11 @@ import (
 const address = "localhost:9999"
 
 func main() {
+	logger := logger.NewLogger("osbb-webapi")
+
 	c, err := client.NewNotifications(address)
 	if err != nil {
-		log.Fatalf("could not create notifications client: %v", err)
+		logger.WithError(err).Fatalln("Could not create notifications client")
 	}
 	defer c.Close()
 
@@ -22,8 +24,8 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	err = server.AllNotifications(ctx, c)
+	err = server.AllNotifications(ctx, logger, c)
 	if err != nil {
-		log.Fatalf("could not send all notifications %v", err)
+		logger.WithError(err).Fatalln("Could not sent all notifications")
 	}
 }

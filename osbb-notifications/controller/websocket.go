@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/sirupsen/logrus"
+
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
 )
@@ -40,11 +42,11 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ListenAndServeWebSocket(ctx context.Context, addr string) error {
+func ListenAndServeWebSocket(ctx context.Context, logger *logrus.Entry, addr string) error {
 	r := mux.NewRouter()
 	r.HandleFunc("/ws", websocketHandler)
 
-	fmt.Printf(" + [Websocket server listening... at%s]\n", addr)
+	logger.WithField("address", addr).Infoln("Websocket server is started")
 
 	err := http.ListenAndServe(addr, r)
 	if err != nil {

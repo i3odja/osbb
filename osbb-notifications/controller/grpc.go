@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net"
 
+	"github.com/sirupsen/logrus"
+
 	pb "github.com/i3odja/osbb/contracts/notifications"
 	"github.com/i3odja/osbb/notifications/service"
 	"google.golang.org/grpc"
@@ -15,12 +17,13 @@ type grpcServer struct {
 	push service.Push
 }
 
-func ListenAndServeGRPC(ctx context.Context, addr string) error {
+func ListenAndServeGRPC(ctx context.Context, logger *logrus.Entry, addr string) error {
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		return fmt.Errorf("failed to listen: %w", err)
 	}
-	fmt.Printf(" + [GRPC server listening... at%v]\n", addr)
+
+	logger.WithField("address", addr).Infoln("GRPC server is started")
 
 	s := grpc.NewServer()
 
