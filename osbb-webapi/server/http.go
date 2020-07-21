@@ -4,12 +4,26 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
+	"strconv"
 
 	pb "github.com/i3odja/osbb/contracts/notifications"
 	"github.com/i3odja/osbb/webapi/client"
+	"github.com/i3odja/osbb/webapi/config"
 )
 
 type HTTP struct {
+	srv *http.Server
+}
+
+func NewHTTP(cfg *config.Config) *HTTP {
+	srv := &http.Server{
+		Addr: strconv.Itoa(cfg.HTTPPort),
+	}
+
+	return &HTTP{
+		srv: srv,
+	}
 }
 
 func AllNotifications(ctx context.Context, c *client.Notifications) error {

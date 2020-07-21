@@ -20,7 +20,7 @@ func ListenAndServeGRPC(ctx context.Context, addr string) error {
 	if err != nil {
 		return fmt.Errorf("failed to listen: %w", err)
 	}
-	fmt.Printf("Server listening at %v", addr)
+	fmt.Printf(" + [GRPC server listening... at%v]\n", addr)
 
 	s := grpc.NewServer()
 
