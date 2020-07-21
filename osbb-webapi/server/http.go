@@ -55,7 +55,7 @@ func AllNotifications(ctx context.Context, c *client.Notifications) error {
 		UserId: "0731674016",
 	})
 	if err != nil {
-		return fmt.Errorf("could not send notification 2: %w", err)
+		return fmt.Errorf("could not send notification: %w", err)
 	}
 	log.Printf("Sending...: %s", rs.GetSResponse())
 

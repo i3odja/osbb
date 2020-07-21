@@ -18,7 +18,7 @@ func main() {
 	}
 	defer c.Close()
 
-	//// Contact the controller and print out its response.
+	// Contact the controller and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
