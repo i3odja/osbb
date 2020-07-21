@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"flag"
-	"sync"
-
-	"github.com/i3odja/osbb/shared/logger"
+	"fmt"
 
 	"github.com/i3odja/osbb/notifications/controller"
+	"github.com/i3odja/osbb/shared/logger"
+	"golang.org/x/sync/errgroup"
 )
 
 var httpAddress = flag.String("http_addr", ":8189", "HTTP service address")
@@ -18,43 +18,44 @@ func main() {
 	logger := logger.NewLogger("osbb-notifications")
 	flag.Parse()
 
-	var wg sync.WaitGroup
-
-	wg.Add(3)
+	g, ctx := errgroup.WithContext(context.Background())
 
 	logger.Infoln("Starting all servers...")
 
 	// HTTP Server Running...
-	go func() {
-		defer wg.Done()
-
-		err := controller.ServerAndListenHTTPServer(context.TODO(), logger, *httpAddress)
+	g.Go(func() error {
+		err := controller.ServerAndListenHTTPServer(ctx, logger, *httpAddress)
 		if err != nil {
-			logger.WithError(err).Fatalln("HTTP Server failed")
+			return fmt.Errorf("http server failed: %w", err)
 		}
-	}()
+
+		return nil
+	})
 
 	// GRPC Server Running...
-	go func() {
-		defer wg.Done()
-
-		err := controller.ListenAndServeGRPC(context.TODO(), logger, *grpcAddress)
+	g.Go(func() error {
+		err := controller.ListenAndServeGRPC(ctx, logger, *grpcAddress)
 		if err != nil {
-			logger.WithError(err).Fatalln("GRPC Server failed")
+			return fmt.Errorf("grpc server failed: %w", err)
 		}
-	}()
+
+		return nil
+	})
 
 	// WebSocket Server Running...
-	go func() {
-		defer wg.Done()
-
-		err := controller.ListenAndServeWebSocket(context.TODO(), logger, *wsAddress)
+	g.Go(func() error {
+		err := controller.ListenAndServeWebSocket(ctx, logger, *wsAddress)
 		if err != nil {
-			logger.WithError(err).Fatalln("WebSocket Server failed")
+			return fmt.Errorf("websocket server failed: %w", err)
 		}
-	}()
 
-	wg.Wait()
+		return nil
+	})
+
+	err := g.Wait()
+	if err != nil {
+		logger.WithError(err).Fatalln("servers failed")
+	}
 
 	logger.Infoln("All servers are terminated!")
 }

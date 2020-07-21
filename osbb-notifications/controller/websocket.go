@@ -22,13 +22,15 @@ var upgrader = websocket.Upgrader{
 func websocketHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil) // error ignored for sake of simplicity
 	if err != nil {
-		fmt.Printf("websocketHandler: %v", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	for {
 		// Read message from browser
 		msgType, msg, err := conn.ReadMessage()
 		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -37,6 +39,7 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 
 		// Write message back to browser
 		if err = conn.WriteMessage(msgType, msg); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
