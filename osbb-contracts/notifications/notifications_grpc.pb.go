@@ -60,7 +60,7 @@ func (c *serviceClient) MyNotification(ctx context.Context, in *MyRequest, opts 
 	return out, nil
 }
 
-// ServiceServer is the controller API for Service service.
+// ServiceServer is the server API for Service service.
 // All implementations must embed UnimplementedServiceServer
 // for forward compatibility
 type ServiceServer interface {
