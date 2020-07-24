@@ -29,3 +29,21 @@ services:
     depends_on:
       - db
     restart: on-failure
+
+  osbb-notifications:
+    image: github.com/i3odja/osbb/osbb-notifications
+    networks:
+      - osbbnet
+    ports:
+      - "9090:9090"
+      - "8189:8189"
+      - "9999:9999"
+    env_file:
+      - .env
+    build:
+      dockerfile: Dockerfile
+      context: ./osbb-notifications
+    depends_on:
+      - db
+      - migrator
+    restart: on-failure
