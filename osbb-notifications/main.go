@@ -33,11 +33,13 @@ func main() {
 		logger.WithError(err).Infoln("could not get db config...")
 	}
 
-	_, err = storage.ConnectToDB(dbConfig)
+	db, err := storage.ConnectToDB(dbConfig)
 	if err != nil {
 		logger.WithError(err).Infoln("connection to db failed!")
 	}
 	logger.Infoln("Connection to db successful!")
+
+	_ = storage.NewNotifications(db)
 
 	logger.Infoln("Starting all servers...")
 
@@ -53,7 +55,7 @@ func main() {
 
 	// GRPC Server Running...
 	g.Go(func() error {
-		err := controller.ListenAndServeGRPC(ctx, logger, *grpcAddress)
+		err := controller.ListenAndServeGRPC(ctx, logger, db, *grpcAddress)
 		if err != nil {
 			return fmt.Errorf("grpc server failed: %w", err)
 		}
