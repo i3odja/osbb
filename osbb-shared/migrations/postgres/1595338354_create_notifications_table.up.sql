@@ -1,0 +1,1 @@
+CREATE TABLE public.notifications (id integer unique, message varchar(100));

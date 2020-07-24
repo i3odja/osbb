@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/sirupsen/logrus"
+
 	"github.com/gorilla/mux"
 )
 
@@ -12,12 +14,12 @@ func Test(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("I'm testing endpoint..."))
 }
 
-func ServerAndListenHTTPServer(ctx context.Context, addr string) error {
+func ServerAndListenHTTPServer(ctx context.Context, logger *logrus.Entry, addr string) error {
 	rr := mux.NewRouter()
 	rr.HandleFunc("/test", Test)
 	http.Handle("/", rr)
 
-	fmt.Printf(" + [HTTP server listening... at%s]\n", addr)
+	logger.WithField("address", addr).Infoln("HTTP server is started")
 
 	err := http.ListenAndServe(addr, nil)
 	if err != nil {

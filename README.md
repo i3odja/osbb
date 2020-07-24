@@ -12,4 +12,6 @@ localhost:9999
 
 ## WebSocket server
 
-[http://localhost:9090/ws/home](http://localhost:9090/ws/home)
+```
+ws://localhost:9090/ws
+```

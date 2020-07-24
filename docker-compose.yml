@@ -1,0 +1,31 @@
+version: '3'
+
+networks:
+  osbbnet:
+    driver: bridge
+
+services:
+  db:
+    image: postgres
+    restart: always
+    networks:
+      - osbbnet
+    env_file:
+      - .env
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  migrator:
+    image: migrate/migrate
+    networks:
+      - osbbnet
+    volumes:
+      - ./osbb-shared/migrations:/migrations
+    env_file:
+      - .env
+    command: ["-path", "./migrations/postgres", "-database",  "postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB?sslmode=disable", "up"]
+    depends_on:
+      - db
+    restart: on-failure
