@@ -6,11 +6,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/sirupsen/logrus"
-
 	pb "github.com/i3odja/osbb/contracts/notifications"
 	"github.com/i3odja/osbb/webapi/client"
 	"github.com/i3odja/osbb/webapi/config"
+	"github.com/sirupsen/logrus"
 )
 
 type HTTP struct {

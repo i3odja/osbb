@@ -47,3 +47,19 @@ services:
       - db
       - migrator
     restart: on-failure
+
+  osbb-webapi:
+    image: github.com/i3odja/osbb/osbb-webapi
+    networks:
+      - osbbnet
+    ports:
+      - "9009:9009"
+    env_file:
+      - .env
+    build:
+      dockerfile: Dockerfile
+      context: ./osbb-webapi
+    depends_on:
+      - db
+      - migrator
+    restart: on-failure
