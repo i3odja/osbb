@@ -59,6 +59,13 @@ func (s *grpcServer) BroadcastNotification(ctx context.Context, in *pb.Broadcast
 	if err != nil {
 		return &pb.BroadcastResponse{BResponse: err.Error()}, nil
 	}
+
+	n := storage.NewNotifications(s.db)
+	err = n.Add(id)
+	if err != nil {
+		return nil, fmt.Errorf("add error: %w", err)
+	}
+
 	return &pb.BroadcastResponse{BResponse: id}, nil
 }
 
@@ -67,5 +74,12 @@ func (s *grpcServer) MyNotification(ctx context.Context, in *pb.MyRequest) (*pb.
 	if err != nil {
 		return &pb.MyResponse{MResponse: err.Error()}, nil
 	}
+
+	n := storage.NewNotifications(s.db)
+	err = n.Add(title)
+	if err != nil {
+		return nil, fmt.Errorf("add error: %w", err)
+	}
+
 	return &pb.MyResponse{MResponse: title}, nil
 }
