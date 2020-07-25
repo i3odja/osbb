@@ -1,5 +1,15 @@
 # osbb
 
+## How work:
+#### Start
+```
+make up
+```
+#### Stop
+```
+make down
+```
+
 ## HTTP server
 
 [http://localhost:8189/test](http://localhost:8189/test)
