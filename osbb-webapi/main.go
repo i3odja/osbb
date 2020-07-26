@@ -9,10 +9,12 @@ import (
 	"github.com/i3odja/osbb/webapi/server"
 )
 
-const address = "localhost:9999"
+const address = "osbb-notifications:9999"
 
 func main() {
 	logger := logger.NewLogger("osbb-webapi")
+
+	logger.Infoln("Webapi service starting...")
 
 	c, err := client.NewNotifications(address)
 	if err != nil {

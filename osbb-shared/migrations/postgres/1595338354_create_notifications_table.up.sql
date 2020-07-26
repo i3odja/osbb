@@ -1,1 +1,1 @@
-CREATE TABLE public.notifications (id integer unique, message varchar(100));
+CREATE TABLE public.notifications (id uuid NOT NULL, message varchar(100));
