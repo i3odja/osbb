@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"github.com/i3odja/osbb/shared/logger"
@@ -9,14 +10,12 @@ import (
 	"github.com/i3odja/osbb/webapi/server"
 )
 
-const address = "osbb-notifications:9999"
-
 func main() {
 	logger := logger.NewLogger("osbb-webapi")
 
 	logger.Infoln("Webapi service starting...")
 
-	c, err := client.NewNotifications(address)
+	c, err := client.NewNotifications(os.Getenv("OSBB_NOTIFICATIONS_ADDRESS"))
 	if err != nil {
 		logger.WithError(err).Fatalln("Could not create notifications client")
 	}
