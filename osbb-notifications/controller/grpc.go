@@ -51,6 +51,8 @@ func (s *grpcServer) SendNotification(ctx context.Context, in *pb.SendRequest) (
 		return nil, fmt.Errorf("add error: %w", err)
 	}
 
+	go BroadcastMessage(id)
+
 	return &pb.SendResponse{SResponse: id}, nil
 }
 
@@ -66,6 +68,8 @@ func (s *grpcServer) BroadcastNotification(ctx context.Context, in *pb.Broadcast
 		return nil, fmt.Errorf("add error: %w", err)
 	}
 
+	go BroadcastMessage(id)
+
 	return &pb.BroadcastResponse{BResponse: id}, nil
 }
 
@@ -80,6 +84,8 @@ func (s *grpcServer) MyNotification(ctx context.Context, in *pb.MyRequest) (*pb.
 	if err != nil {
 		return nil, fmt.Errorf("add error: %w", err)
 	}
+
+	go BroadcastMessage(title)
 
 	return &pb.MyResponse{MResponse: title}, nil
 }
