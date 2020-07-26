@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
+	"os"
 
 	"github.com/i3odja/osbb/notifications/config"
 	"github.com/i3odja/osbb/notifications/controller"
@@ -12,14 +12,8 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-var httpAddress = flag.String("http_addr", ":8189", "HTTP service address")
-var grpcAddress = flag.String("grpc_addr", ":9999", "GRPC service address")
-var wsAddress = flag.String("ws_addr", ":9090", "WebSocket service address")
-
 func main() {
 	g, ctx := errgroup.WithContext(context.Background())
-
-	flag.Parse()
 
 	logger := logger.NewLogger("osbb-notifications")
 
@@ -45,7 +39,7 @@ func main() {
 
 	// HTTP Server Running...
 	g.Go(func() error {
-		err := controller.ServerAndListenHTTPServer(ctx, logger, *httpAddress)
+		err := controller.ServerAndListenHTTPServer(ctx, logger, os.Getenv("HTTP_ADDRESS"))
 		if err != nil {
 			return fmt.Errorf("http server failed: %w", err)
 		}
@@ -55,7 +49,7 @@ func main() {
 
 	// GRPC Server Running...
 	g.Go(func() error {
-		err := controller.ListenAndServeGRPC(ctx, logger, db, *grpcAddress)
+		err := controller.ListenAndServeGRPC(ctx, logger, db, os.Getenv("GRPC_ADDRESS"))
 		if err != nil {
 			return fmt.Errorf("grpc server failed: %w", err)
 		}
@@ -65,7 +59,7 @@ func main() {
 
 	// WebSocket Server Running...
 	g.Go(func() error {
-		err := controller.ListenAndServeWebSocket(ctx, logger, *wsAddress)
+		err := controller.ListenAndServeWebSocket(ctx, logger, os.Getenv("WEBSOCKET_ADDRESS"))
 		if err != nil {
 			return fmt.Errorf("websocket server failed: %w", err)
 		}
