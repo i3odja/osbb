@@ -61,13 +61,10 @@ func NewNotifications(data *sql.DB) *Notifications {
 func (n *Notifications) Add(message string) error {
 	ui, err := uuid.NewRandom()
 
-	fmt.Println(ui)
 	if err != nil {
 		return fmt.Errorf("uuid.NewRandom error: %w", err)
 	}
 
-	fmt.Println(ui, message)
-	fmt.Println(n.db)
 	_, err = n.db.Exec(queryInsert, ui, message)
 
 	return err
