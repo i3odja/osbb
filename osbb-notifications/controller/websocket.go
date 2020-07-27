@@ -33,12 +33,9 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// delete client connection after closed
-	defer delete(clients, conn)
+	defer deleteConnection(&mu, conn)
 
-	// Add new client connections to map
-	mu.Lock()
-	clients[conn] = struct{}{}
-	mu.Unlock()
+	addConnection(&mu, conn)
 
 	for {
 		// Read message from browser
@@ -57,6 +54,22 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+}
+
+// deleteConnection() removes client connection after closed
+func deleteConnection(mu *sync.Mutex, conn *websocket.Conn) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	delete(clients, conn)
+}
+
+// addConnection() adds new client connections to map
+func addConnection(mu *sync.Mutex, conn *websocket.Conn) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	clients[conn] = struct{}{}
 }
 
 func ListenAndServeWebSocket(ctx context.Context, logger *logrus.Entry, addr string) error {
