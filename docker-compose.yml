@@ -24,7 +24,7 @@ services:
     volumes:
       - ./osbb-shared/migrations:/migrations
     env_file:
-      - ./.configs-env/db.env
+      - ./.configs-env/migrator.env
     command: ["-path", "./migrations/postgres", "-database",  "postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB?sslmode=disable", "up"]
     depends_on:
       - db
@@ -40,7 +40,6 @@ services:
       - "9999:9999"
     env_file:
       - ./.configs-env/osbb-notifications.env
-      - ./.configs-env/db.env
     build:
       dockerfile: Dockerfile
       context: ./osbb-notifications
