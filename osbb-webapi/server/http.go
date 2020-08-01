@@ -3,28 +3,11 @@ package server
 import (
 	"context"
 	"fmt"
-	"net/http"
-	"strconv"
 
 	pb "github.com/i3odja/osbb/contracts/notifications"
 	"github.com/i3odja/osbb/webapi/client"
-	"github.com/i3odja/osbb/webapi/config"
 	"github.com/sirupsen/logrus"
 )
-
-type HTTP struct {
-	srv *http.Server
-}
-
-func NewHTTP(cfg *config.Config) *HTTP {
-	srv := &http.Server{
-		Addr: strconv.Itoa(cfg.HTTPPort),
-	}
-
-	return &HTTP{
-		srv: srv,
-	}
-}
 
 func AllNotifications(ctx context.Context, logger *logrus.Entry, c *client.Notifications) error {
 	r, err := c.SendNotification(ctx, &pb.SendRequest{UserId: "0673419017", Notification: nil})
