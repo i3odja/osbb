@@ -2,20 +2,31 @@ package main
 
 import (
 	"context"
-	"os"
 	"time"
 
 	"github.com/i3odja/osbb/shared/logger"
 	"github.com/i3odja/osbb/webapi/client"
+	"github.com/i3odja/osbb/webapi/config"
 	"github.com/i3odja/osbb/webapi/server"
 )
 
 func main() {
+	ctx := context.Background()
 	logger := logger.NewLogger("osbb-webapi")
 
 	logger.Infoln("Webapi service starting...")
 
-	c, err := client.NewNotifications(os.Getenv("OSBB_NOTIFICATIONS_ADDRESS"))
+	nc, err := config.NewConfig()
+	if err != nil {
+		logger.WithError(err).Infoln("could not get new config...")
+	}
+
+	address, err := nc.OSBBNotificationsConfig(ctx)
+	if err != nil {
+		logger.WithError(err).Infoln("could not get osbb-notifications config...")
+	}
+
+	c, err := client.NewNotifications(address.OSBBNotifications)
 	if err != nil {
 		logger.WithError(err).Fatalln("Could not create notifications client")
 	}

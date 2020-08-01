@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/i3odja/osbb/notifications/controller"
+
 	"github.com/i3odja/osbb/notifications/storage"
 	"github.com/kelseyhightower/envconfig"
 )
@@ -14,6 +16,10 @@ type Config struct {
 	PostgresUser string `envconfig:"POSTGRES_USER" required:"true"`
 	PostgresPass string `envconfig:"POSTGRES_PASSWORD" required:"true"`
 	PostgresDB   string `envconfig:"POSTGRES_DB" required:"true"`
+
+	HTTPAddress      string `envconfig:"HTTP_ADDRESS" required:"true"`
+	GRPCAddress      string `envconfig:"GRPC_ADDRESS" required:"true"`
+	WebsocketAddress string `envconfig:"WEBSOCKET_ADDRESS" required:"true"`
 }
 
 // NewConfig() create new configuration for application
@@ -36,5 +42,14 @@ func (c *Config) DBConfig(ctx context.Context) (*storage.DBConfig, error) {
 		User:     c.PostgresUser,
 		Password: c.PostgresPass,
 		DBName:   c.PostgresDB,
+	}, nil
+}
+
+// Addresses get configuration for Postgres Database
+func (c *Config) AddressConfig(ctx context.Context) (*controller.Address, error) {
+	return &controller.Address{
+		HTTP:      c.HTTPAddress,
+		GRPC:      c.GRPCAddress,
+		Websocket: c.WebsocketAddress,
 	}, nil
 }

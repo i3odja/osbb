@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/i3odja/osbb/notifications/config"
 	"github.com/i3odja/osbb/notifications/controller"
@@ -27,6 +26,11 @@ func main() {
 		logger.WithError(err).Infoln("could not get db config...")
 	}
 
+	addresses, err := nc.AddressConfig(ctx)
+	if err != nil {
+		logger.WithError(err).Infoln("could not get address config...")
+	}
+
 	db, err := storage.ConnectToDB(dbConfig)
 	if err != nil {
 		logger.WithError(err).Infoln("connection to db failed!")
@@ -39,7 +43,8 @@ func main() {
 
 	// HTTP Server Running...
 	g.Go(func() error {
-		err := controller.ServerAndListenHTTPServer(ctx, logger, os.Getenv("HTTP_ADDRESS"))
+		//err := controller.ServerAndListenHTTPServer(ctx, logger, os.Getenv("HTTP_ADDRESS"))
+		err := controller.ServerAndListenHTTPServer(ctx, logger, addresses.HTTP)
 		if err != nil {
 			return fmt.Errorf("http server failed: %w", err)
 		}
@@ -49,7 +54,8 @@ func main() {
 
 	// GRPC Server Running...
 	g.Go(func() error {
-		err := controller.ListenAndServeGRPC(ctx, logger, db, os.Getenv("GRPC_ADDRESS"))
+		//err := controller.ListenAndServeGRPC(ctx, logger, db, os.Getenv("GRPC_ADDRESS"))
+		err := controller.ListenAndServeGRPC(ctx, logger, db, addresses.GRPC)
 		if err != nil {
 			return fmt.Errorf("grpc server failed: %w", err)
 		}
@@ -59,7 +65,8 @@ func main() {
 
 	// WebSocket Server Running...
 	g.Go(func() error {
-		err := controller.ListenAndServeWebSocket(ctx, logger, os.Getenv("WEBSOCKET_ADDRESS"))
+		//err := controller.ListenAndServeWebSocket(ctx, logger, os.Getenv("WEBSOCKET_ADDRESS"))
+		err := controller.ListenAndServeWebSocket(ctx, logger, addresses.Websocket)
 		if err != nil {
 			return fmt.Errorf("websocket server failed: %w", err)
 		}
