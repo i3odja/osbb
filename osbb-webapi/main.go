@@ -18,12 +18,12 @@ func main() {
 
 	nc, err := config.NewConfig()
 	if err != nil {
-		logger.WithError(err).Infoln("could not get new config...")
+		logger.WithError(err).Infoln("Could not get new config...")
 	}
 
 	address, err := nc.OSBBNotificationsConfig(ctx)
 	if err != nil {
-		logger.WithError(err).Infoln("could not get osbb-notifications config...")
+		logger.WithError(err).Infoln("Could not get osbb-notifications config...")
 	}
 
 	c, err := client.NewNotifications(address.OSBBNotifications)
@@ -32,7 +32,6 @@ func main() {
 	}
 	defer c.Close()
 
-	// Contact the controller and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 

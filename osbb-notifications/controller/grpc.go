@@ -8,7 +8,6 @@ import (
 
 	pb "github.com/i3odja/osbb/contracts/notifications"
 	"github.com/i3odja/osbb/notifications/service"
-	"github.com/i3odja/osbb/notifications/storage"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
@@ -43,7 +42,7 @@ func (s *grpcServer) SendNotification(ctx context.Context, in *pb.SendRequest) (
 		return &pb.SendResponse{SResponse: err.Error()}, nil
 	}
 
-	n := storage.NewNotifications(s.db)
+	n := service.NewNotifications(s.db)
 	err = n.Add(id)
 	if err != nil {
 		return nil, fmt.Errorf("add error: %w", err)
@@ -60,7 +59,7 @@ func (s *grpcServer) BroadcastNotification(ctx context.Context, in *pb.Broadcast
 		return &pb.BroadcastResponse{BResponse: err.Error()}, nil
 	}
 
-	n := storage.NewNotifications(s.db)
+	n := service.NewNotifications(s.db)
 	err = n.Add(id)
 	if err != nil {
 		return nil, fmt.Errorf("add error: %w", err)
@@ -77,7 +76,7 @@ func (s *grpcServer) MyNotification(ctx context.Context, in *pb.MyRequest) (*pb.
 		return &pb.MyResponse{MResponse: err.Error()}, nil
 	}
 
-	n := storage.NewNotifications(s.db)
+	n := service.NewNotifications(s.db)
 	err = n.Add(title)
 	if err != nil {
 		return nil, fmt.Errorf("add error: %w", err)
