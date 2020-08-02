@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/i3odja/osbb/notifications/controller"
-
 	"github.com/i3odja/osbb/notifications/storage"
 	"github.com/kelseyhightower/envconfig"
 )

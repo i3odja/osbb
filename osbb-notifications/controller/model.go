@@ -1,6 +1,6 @@
 package controller
 
-// Config of osbb-notification
+// Address{} of osbb-notification
 type Address struct {
 	HTTP      string
 	GRPC      string

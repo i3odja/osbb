@@ -6,12 +6,10 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/i3odja/osbb/notifications/storage"
-
-	"github.com/sirupsen/logrus"
-
 	pb "github.com/i3odja/osbb/contracts/notifications"
 	"github.com/i3odja/osbb/notifications/service"
+	"github.com/i3odja/osbb/notifications/storage"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
 
