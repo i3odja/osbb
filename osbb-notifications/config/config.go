@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/i3odja/osbb/notifications/controller"
-
 	"github.com/i3odja/osbb/notifications/storage"
 	"github.com/kelseyhightower/envconfig"
 )
@@ -45,7 +44,7 @@ func (c *Config) DBConfig(ctx context.Context) (*storage.DBConfig, error) {
 	}, nil
 }
 
-// Addresses get configuration for Postgres Database
+// AddressConfig get configuration for HTTP, GRPC and Websocket servers
 func (c *Config) AddressConfig(ctx context.Context) (*controller.Address, error) {
 	return &controller.Address{
 		HTTP:      c.HTTPAddress,

@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/sirupsen/logrus"
-
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 )
 
 func Test(w http.ResponseWriter, r *http.Request) {
