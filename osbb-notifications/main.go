@@ -38,13 +38,15 @@ func main() {
 	}
 	logger.Infoln("Connection to db successful!")
 
-	_ = service.NewNotifications(db)
+	notification := service.NewNotifications(db)
+
+	h := controller.NewHTTP(notification)
 
 	logger.Infoln("Starting all servers...")
 
 	// HTTP Server Running...
 	g.Go(func() error {
-		err := controller.ServerAndListenHTTPServer(ctx, logger, addresses.HTTP)
+		err := h.ServerAndListenHTTPServer(ctx, logger, addresses.HTTP)
 		if err != nil {
 			return fmt.Errorf("http server failed: %w", err)
 		}
