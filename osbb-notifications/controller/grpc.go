@@ -17,24 +17,26 @@ type grpcServer struct {
 	push service.Push
 	db   *sql.DB
 	conn *Connections
+	addr string
 }
 
-func NewGRPCServer(db *sql.DB, conn *Connections) *grpcServer {
+func NewGRPCServer(db *sql.DB, conn *Connections, addr string) *grpcServer {
 	return &grpcServer{
 		UnimplementedServiceServer: pb.UnimplementedServiceServer{},
 		push:                       service.Push{},
 		db:                         db,
 		conn:                       conn,
+		addr:                       addr,
 	}
 }
 
-func (s *grpcServer) ListenAndServeGRPC(ctx context.Context, logger *logrus.Entry, addr string) error {
-	lis, err := net.Listen("tcp", addr)
+func (s *grpcServer) ListenAndServeGRPC(ctx context.Context, logger *logrus.Entry) error {
+	lis, err := net.Listen("tcp", s.addr)
 	if err != nil {
 		return fmt.Errorf("failed to listen: %w", err)
 	}
 
-	logger.WithField("address", addr).Infoln("GRPC server is started")
+	logger.WithField("address", s.addr).Infoln("GRPC server is started")
 
 	ns := grpc.NewServer()
 
