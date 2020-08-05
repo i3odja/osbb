@@ -16,9 +16,10 @@ type grpcServer struct {
 	pb.UnimplementedServiceServer
 	push service.Push
 	db   *sql.DB
+	conn *Connections
 }
 
-func ListenAndServeGRPC(ctx context.Context, logger *logrus.Entry, n *sql.DB, addr string) error {
+func ListenAndServeGRPC(ctx context.Context, logger *logrus.Entry, n *sql.DB, conn *Connections, addr string) error {
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		return fmt.Errorf("failed to listen: %w", err)
@@ -28,7 +29,7 @@ func ListenAndServeGRPC(ctx context.Context, logger *logrus.Entry, n *sql.DB, ad
 
 	s := grpc.NewServer()
 
-	pb.RegisterServiceServer(s, &grpcServer{db: n})
+	pb.RegisterServiceServer(s, &grpcServer{db: n, conn: conn})
 	if err := s.Serve(lis); err != nil {
 		return fmt.Errorf("failed to serve: %w", err)
 	}
@@ -48,7 +49,7 @@ func (s *grpcServer) SendNotification(ctx context.Context, in *pb.SendRequest) (
 		return nil, fmt.Errorf("add error: %w", err)
 	}
 
-	go BroadcastMessage(id)
+	go s.conn.BroadcastMessage(id)
 
 	return &pb.SendResponse{SResponse: id}, nil
 }
@@ -65,7 +66,7 @@ func (s *grpcServer) BroadcastNotification(ctx context.Context, in *pb.Broadcast
 		return nil, fmt.Errorf("add error: %w", err)
 	}
 
-	go BroadcastMessage(id)
+	go s.conn.BroadcastMessage(id)
 
 	return &pb.BroadcastResponse{BResponse: id}, nil
 }
@@ -82,7 +83,7 @@ func (s *grpcServer) MyNotification(ctx context.Context, in *pb.MyRequest) (*pb.
 		return nil, fmt.Errorf("add error: %w", err)
 	}
 
-	go BroadcastMessage(title)
+	go s.conn.BroadcastMessage(title)
 
 	return &pb.MyResponse{MResponse: title}, nil
 }

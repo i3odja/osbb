@@ -20,36 +20,46 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-// clients includes all active connections
-var clients = make(map[*websocket.Conn]struct{})
-var mu sync.Mutex
-var broadcast = make(chan []byte)
+type Connections struct {
+	conn    *websocket.Conn
+	clients map[*websocket.Conn]struct{}
+	mu      sync.Mutex
+}
 
-func websocketHandler(w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil) // error ignored for sake of simplicity
+func NewConnections() *Connections {
+	return &Connections{
+		conn:    nil,
+		clients: make(map[*websocket.Conn]struct{}),
+		mu:      sync.Mutex{},
+	}
+}
+
+func (c *Connections) websocketHandler(w http.ResponseWriter, r *http.Request) {
+	var err error
+	c.conn, err = upgrader.Upgrade(w, r, nil) // error ignored for sake of simplicity
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	// delete client connection after closed
-	defer deleteConnection(&mu, conn)
+	defer c.deleteConnection()
 
-	addConnection(&mu, conn)
+	c.addConnection()
 
 	for {
 		// Read message from browser
-		msgType, msg, err := conn.ReadMessage()
+		msgType, msg, err := c.conn.ReadMessage()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		// Print the message to the console
-		fmt.Printf("%s sent to server: %s\n", conn.RemoteAddr(), string(msg))
+		fmt.Printf("%s sent to server: %s\n", c.conn.RemoteAddr(), string(msg))
 
 		// Write message back to browser
-		if err = conn.WriteMessage(msgType, msg); err != nil {
+		if err = c.conn.WriteMessage(msgType, msg); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -57,28 +67,28 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // deleteConnection() removes client connection after closed
-func deleteConnection(mu *sync.Mutex, conn *websocket.Conn) {
-	mu.Lock()
-	defer mu.Unlock()
+func (c *Connections) deleteConnection() {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 
-	delete(clients, conn)
+	delete(c.clients, c.conn)
 }
 
 // addConnection() adds new client connections to map
-func addConnection(mu *sync.Mutex, conn *websocket.Conn) {
-	mu.Lock()
-	defer mu.Unlock()
+func (c *Connections) addConnection() {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 
-	clients[conn] = struct{}{}
+	c.clients[c.conn] = struct{}{}
 }
 
-func ListenAndServeWebSocket(ctx context.Context, logger *logrus.Entry, addr string) error {
+func (c *Connections) ListenAndServeWebSocket(ctx context.Context, logger *logrus.Entry, addr string) error {
 	r := mux.NewRouter()
-	r.HandleFunc("/ws", websocketHandler)
+	r.HandleFunc("/ws", c.websocketHandler)
 
 	logger.WithField("address", addr).Infoln("Websocket server is started")
 
-	go countOfClients()
+	go c.countOfClients()
 
 	err := http.ListenAndServe(addr, r)
 	if err != nil {
@@ -89,16 +99,16 @@ func ListenAndServeWebSocket(ctx context.Context, logger *logrus.Entry, addr str
 }
 
 // countOfClients() shows information about active connections with interval equal to 5 seconds
-func countOfClients() {
+func (c *Connections) countOfClients() {
 	for {
 		time.Sleep(5 * time.Second)
-		fmt.Printf("At the moment, are connected %d clients\n", len(clients))
+		fmt.Printf("At the moment, are connected %d clients\n", len(c.clients))
 	}
 }
 
-// broadcastMessage() send message to all active clients
-func BroadcastMessage(text string) {
-	for connection, _ := range clients {
+// BroadcastMessage() send message to all active clients
+func (c *Connections) BroadcastMessage(text string) {
+	for connection, _ := range c.clients {
 		if err := connection.WriteMessage(1, []byte(text)); err != nil {
 			return
 		}
