@@ -12,11 +12,13 @@ import (
 
 type HTTP struct {
 	notification *service.Notifications
+	addr         string
 }
 
-func NewHTTP(notification *service.Notifications) *HTTP {
+func NewHTTP(notification *service.Notifications, addr string) *HTTP {
 	return &HTTP{
 		notification: notification,
+		addr:         addr,
 	}
 }
 
@@ -40,15 +42,15 @@ func (h *HTTP) GetID(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(responseMessage))
 }
 
-func (h *HTTP) ServerAndListenHTTPServer(ctx context.Context, logger *logrus.Entry, addr string) error {
+func (h *HTTP) ServerAndListenHTTPServer(ctx context.Context, logger *logrus.Entry) error {
 	rr := mux.NewRouter()
 	rr.HandleFunc("/test", h.Test)
 	rr.HandleFunc("/test/{ID}", h.GetID)
 	http.Handle("/", rr)
 
-	logger.WithField("address", addr).Infoln("HTTP server is started")
+	logger.WithField("address", h.addr).Infoln("HTTP server is started")
 
-	err := http.ListenAndServe(addr, nil)
+	err := http.ListenAndServe(h.addr, nil)
 	if err != nil {
 		return fmt.Errorf("failed to serve http server: %w", err)
 	}

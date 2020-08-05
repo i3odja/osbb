@@ -24,13 +24,15 @@ type Connections struct {
 	conn    *websocket.Conn
 	clients map[*websocket.Conn]struct{}
 	mu      sync.Mutex
+	addr    string
 }
 
-func NewConnections() *Connections {
+func NewConnections(addr string) *Connections {
 	return &Connections{
 		conn:    nil,
 		clients: make(map[*websocket.Conn]struct{}),
 		mu:      sync.Mutex{},
+		addr:    addr,
 	}
 }
 
@@ -82,15 +84,15 @@ func (c *Connections) addConnection() {
 	c.clients[c.conn] = struct{}{}
 }
 
-func (c *Connections) ListenAndServeWebSocket(ctx context.Context, logger *logrus.Entry, addr string) error {
+func (c *Connections) ListenAndServeWebSocket(ctx context.Context, logger *logrus.Entry) error {
 	r := mux.NewRouter()
 	r.HandleFunc("/ws", c.websocketHandler)
 
-	logger.WithField("address", addr).Infoln("Websocket server is started")
+	logger.WithField("address", c.addr).Infoln("Websocket server is started")
 
 	go c.countOfClients()
 
-	err := http.ListenAndServe(addr, r)
+	err := http.ListenAndServe(c.addr, r)
 	if err != nil {
 		return fmt.Errorf("failed to serve web socket: %w", err)
 	}
@@ -106,7 +108,7 @@ func (c *Connections) countOfClients() {
 	}
 }
 
-// BroadcastMessage() send message to all active clients
+// broadcastMessage() send message to all active clients
 func (c *Connections) broadcastMessage(text string) {
 	for connection, _ := range c.clients {
 		if err := connection.WriteMessage(1, []byte(text)); err != nil {

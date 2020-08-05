@@ -40,17 +40,15 @@ func main() {
 
 	notification := service.NewNotifications(db)
 
-	h := controller.NewHTTP(notification)
+	h := controller.NewHTTP(notification, addresses.HTTP)
+	conn := controller.NewConnections(addresses.Websocket)
+	grpc := controller.NewGRPCServer(db, conn, addresses.GRPC)
 
 	logger.Infoln("Starting all servers...")
 
-	conn := controller.NewConnections()
-
-	grpc := controller.NewGRPCServer(db, conn)
-
 	// HTTP Server Running...
 	g.Go(func() error {
-		err := h.ServerAndListenHTTPServer(ctx, logger, addresses.HTTP)
+		err := h.ServerAndListenHTTPServer(ctx, logger)
 		if err != nil {
 			return fmt.Errorf("http server failed: %w", err)
 		}
@@ -60,8 +58,7 @@ func main() {
 
 	// GRPC Server Running...
 	g.Go(func() error {
-		err := grpc.ListenAndServeGRPC(ctx, logger, addresses.GRPC)
-		//err := controller.ListenAndServeGRPC(ctx, logger, db, conn, addresses.GRPC)
+		err := grpc.ListenAndServeGRPC(ctx, logger)
 		if err != nil {
 			return fmt.Errorf("grpc server failed: %w", err)
 		}
@@ -71,7 +68,7 @@ func main() {
 
 	// WebSocket Server Running...
 	g.Go(func() error {
-		err := conn.ListenAndServeWebSocket(ctx, logger, addresses.Websocket)
+		err := conn.ListenAndServeWebSocket(ctx, logger)
 		if err != nil {
 			return fmt.Errorf("websocket server failed: %w", err)
 		}
