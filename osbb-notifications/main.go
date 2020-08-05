@@ -46,6 +46,8 @@ func main() {
 
 	conn := controller.NewConnections()
 
+	grpc := controller.NewGRPCServer(db, conn)
+
 	// HTTP Server Running...
 	g.Go(func() error {
 		err := h.ServerAndListenHTTPServer(ctx, logger, addresses.HTTP)
@@ -58,7 +60,8 @@ func main() {
 
 	// GRPC Server Running...
 	g.Go(func() error {
-		err := controller.ListenAndServeGRPC(ctx, logger, db, conn, addresses.GRPC)
+		err := grpc.ListenAndServeGRPC(ctx, logger, addresses.GRPC)
+		//err := controller.ListenAndServeGRPC(ctx, logger, db, conn, addresses.GRPC)
 		if err != nil {
 			return fmt.Errorf("grpc server failed: %w", err)
 		}
