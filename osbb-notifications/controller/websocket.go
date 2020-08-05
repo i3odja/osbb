@@ -107,7 +107,7 @@ func (c *Connections) countOfClients() {
 }
 
 // BroadcastMessage() send message to all active clients
-func (c *Connections) BroadcastMessage(text string) {
+func (c *Connections) broadcastMessage(text string) {
 	for connection, _ := range c.clients {
 		if err := connection.WriteMessage(1, []byte(text)); err != nil {
 			return

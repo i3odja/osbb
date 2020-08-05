@@ -49,7 +49,7 @@ func (s *grpcServer) SendNotification(ctx context.Context, in *pb.SendRequest) (
 		return nil, fmt.Errorf("add error: %w", err)
 	}
 
-	go s.conn.BroadcastMessage(id)
+	go s.conn.broadcastMessage(id)
 
 	return &pb.SendResponse{SResponse: id}, nil
 }
@@ -66,7 +66,7 @@ func (s *grpcServer) BroadcastNotification(ctx context.Context, in *pb.Broadcast
 		return nil, fmt.Errorf("add error: %w", err)
 	}
 
-	go s.conn.BroadcastMessage(id)
+	go s.conn.broadcastMessage(id)
 
 	return &pb.BroadcastResponse{BResponse: id}, nil
 }
@@ -83,7 +83,7 @@ func (s *grpcServer) MyNotification(ctx context.Context, in *pb.MyRequest) (*pb.
 		return nil, fmt.Errorf("add error: %w", err)
 	}
 
-	go s.conn.BroadcastMessage(title)
+	go s.conn.broadcastMessage(title)
 
 	return &pb.MyResponse{MResponse: title}, nil
 }
